@@ -86,36 +86,38 @@ local function Create(parent, t)
 	
 	for class, _ in pairs(t) do --loop through classes, notice how I want class which is the key, I don't need the value so I do _
 		for _, obj in pairs(t[class]) do --loop through class's serialized objects
-			local object = Instance.new(class) --create the new object with the wanted class
-			local success = pcall(function()
-				local t = object["Anchored"]
-			end)
+			if not (class == "LocalScript" or class == "Script") then
+				local object = Instance.new(class) --create the new object with the wanted class
+				local success = pcall(function()
+					local t = object["Anchored"]
+				end)
 
-			if (success) then
-				object.Anchored = true
-			end
-			
-			if not (topObject) then
-				topObject = object
-			end
-			for prop, value in pairs(obj) do --loop through the serialized object's props and values
-				if prop ~= "Children" then --we need to check if the current key inside of the serialized table is not the Children table
-					if (prop == "Part1") then
-						table.insert(welds,{Object = object, Part1 = value})
+				if (success) then
+					object.Anchored = true
+				end
+
+				if not (topObject) then
+					topObject = object
+				end
+				for prop, value in pairs(obj) do --loop through the serialized object's props and values
+					if prop ~= "Children" then --we need to check if the current key inside of the serialized table is not the Children table
+						if (prop == "Part1") then
+							table.insert(welds,{Object = object, Part1 = value})
+						else
+							object[prop] = Deserialize(prop, value) --do the magic
+						end
 					else
-						object[prop] = Deserialize(prop, value) --do the magic
-					end
-				else
-					local data = Create(object, value) --if it is the Children table, take care of it
-					for i,v in ipairs(data["Welds"]) do
-						table.insert(welds,v)
+						local data = Create(object, value) --if it is the Children table, take care of it
+						for i,v in ipairs(data["Welds"]) do
+							table.insert(welds,v)
+						end
 					end
 				end
-			end
-			if (parent) then
-				object.Parent = parent --parent it to the parent
-				if (object:IsA("Weld")) then
-					object.Part0 = parent
+				if (parent) then
+					object.Parent = parent --parent it to the parent
+					if (object:IsA("Weld")) then
+						object.Part0 = parent
+					end
 				end
 			end
 		end
