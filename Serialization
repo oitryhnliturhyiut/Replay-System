@@ -9,7 +9,9 @@ local Properties = {
 	UnionOperation = {"Name","UsePartColor","SmoothingAngle","BrickColor","CastShadow","Material","Position","Rotation","Size","Transparency"},
 	WedgePart = {"Name","BrickColor","CastShadow","Material","Position","Rotation","Size","Transparency"},
 	CylinderMesh = {"Name", "Offset", "Scale", "VertexColor"},
-	Weld = {"Name","Part1"}
+	Weld = {"Name","Part1"},
+	LocalScript = {"Name"},
+	Script = {"Name}
 }
 
 local function Serialize(prop)
