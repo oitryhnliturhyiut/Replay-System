@@ -9,9 +9,7 @@ local Properties = {
 	UnionOperation = {"Name","UsePartColor","SmoothingAngle","BrickColor","CastShadow","Material","Position","Rotation","Size","Transparency"},
 	WedgePart = {"Name","BrickColor","CastShadow","Material","Position","Rotation","Size","Transparency"},
 	CylinderMesh = {"Name", "Offset", "Scale", "VertexColor"},
-	Weld = {"Name","Part1"},
-	LocalScript = {"Name"},
-	Script = {"Name}
+	Weld = {"Name","Part1"}
 }
 
 local function Serialize(prop)
@@ -83,10 +81,10 @@ end
 local function Create(parent, t)
 	local welds = {}
 	local topObject
-	
+
 	for class, _ in pairs(t) do --loop through classes, notice how I want class which is the key, I don't need the value so I do _
 		for _, obj in pairs(t[class]) do --loop through class's serialized objects
-			if not (class == "LocalScript" or class == "Script") then
+			if not (class and class == "LocalScript" or class == "Script") then
 				local object = Instance.new(class) --create the new object with the wanted class
 				local success = pcall(function()
 					local t = object["Anchored"]
@@ -147,14 +145,14 @@ function module.Decode(t, slot)
 	local data = Create(slot, t)
 	local instance = data["Object"]
 	local welds = data["Welds"]
-	
-	
-	
+
+
+
 	if (#welds > 0) then
 		for i,v in ipairs(welds) do
 			local weld = v["Object"]
 			local Part1 = v["Part1"]
-			
+
 			setWeld(weld,Part1,instance)
 		end
 	end
