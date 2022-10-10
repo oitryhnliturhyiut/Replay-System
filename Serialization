@@ -84,7 +84,7 @@ local function Create(parent, t)
 
 	for class, _ in pairs(t) do --loop through classes, notice how I want class which is the key, I don't need the value so I do _
 		for _, obj in pairs(t[class]) do --loop through class's serialized objects
-			if not (class and class == "LocalScript" or class == "Script") then
+			if (class and class ~= "LocalScript" or class ~= "Script") then
 				local object = Instance.new(class) --create the new object with the wanted class
 				local success = pcall(function()
 					local t = object["Anchored"]
