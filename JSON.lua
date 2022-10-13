@@ -807,7 +807,6 @@ end
 --
 local encode_value -- must predeclare because it calls itself
 function encode_value(self, value, parents, etc, options, indent)
-	wait(0.01)
 
 	if value == nil then
 		return 'null'
